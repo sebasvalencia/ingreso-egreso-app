@@ -3,12 +3,21 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
+// import * as firebase from 'firebase';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
   constructor(public afAuth: AngularFireAuth, private router: Router) { }
+
+  // Escucha cuando cambie el estado del usuario
+  initAuthListener() {
+    this.afAuth.authState.subscribe( firebaseUser => {
+      console.log('firebaseUser', firebaseUser);
+    });
+  }
 
   crearUsuario(nombre: string, email: string, password: string) {
 
