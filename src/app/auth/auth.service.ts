@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class AuthService {
         this.router.navigate(['/']); // navega al dashboard
       }).catch(error => {
         console.error(error);
+        Swal.fire('Error en login', error.message, 'error');
       });
 
   }
@@ -29,6 +31,7 @@ export class AuthService {
         this.router.navigate(['/']); // navega al dashboard
       }).catch(error => {
         console.error(error);
+        Swal.fire('Error en login', error.message, 'error');
       });
   }
 
