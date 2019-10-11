@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFirestore } from '@angular/fire/firestore';
+
 import Swal from 'sweetalert2';
+
 import { map } from 'rxjs/operators';
+
+import { User } from './user.model';
 
 // import * as firebase from 'firebase';
 
@@ -11,7 +17,7 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
 
-  constructor(public afAuth: AngularFireAuth, private router: Router) { }
+  constructor(public afAuth: AngularFireAuth, private router: Router, private afDB: AngularFirestore) { }
 
   // Escucha cuando cambie el estado del usuario
   initAuthListener() {
@@ -26,6 +32,20 @@ export class AuthService {
     this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then(respuesta => {
         console.log(respuesta);
+
+        const user: User = {
+          uid: respuesta.user.uid,
+          nombre,
+          email: respuesta.user.email
+        };
+
+        // creamos colection/documento de datos de usuario
+        this.afDB.doc(`${ user.uid }/usuario`)
+          .set( user )
+          .then( () => {
+            this.router.navigate(['/']);
+          });
+
         this.router.navigate(['/']); // navega al dashboard
       }).catch(error => {
         console.error(error);
