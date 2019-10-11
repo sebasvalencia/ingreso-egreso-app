@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { map } from 'rxjs/operators';
 
 // import * as firebase from 'firebase';
 
@@ -14,7 +15,7 @@ export class AuthService {
 
   // Escucha cuando cambie el estado del usuario
   initAuthListener() {
-    this.afAuth.authState.subscribe( firebaseUser => {
+    this.afAuth.authState.subscribe(firebaseUser => {
       console.log('firebaseUser', firebaseUser);
     });
   }
@@ -45,10 +46,20 @@ export class AuthService {
   }
 
   logout() {
-
     this.router.navigate(['/login']);
     this.afAuth.auth.signOut();
+  }
 
+  estaLogueado() {
+    return this.afAuth.authState
+      .pipe(
+        map(fbUser => {
+          if (fbUser == null) {
+            this.router.navigate(['/login']);
+          }
+          return fbUser != null;
+        })
+      );
   }
 
 
