@@ -13,6 +13,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
 
 import * as fromUI from '../shared/ui.actions';
+import { SetUserAction } from './auth.actions';
+import { Subscription } from 'rxjs';
 
 // import * as firebase from 'firebase';
 
@@ -20,6 +22,8 @@ import * as fromUI from '../shared/ui.actions';
   providedIn: 'root'
 })
 export class AuthService {
+
+  private userSubscription: Subscription = new Subscription();
 
   constructor(public afAuth: AngularFireAuth,
               private router: Router,
@@ -29,7 +33,22 @@ export class AuthService {
   // Escucha cuando cambie el estado del usuario
   initAuthListener() {
     this.afAuth.authState.subscribe(firebaseUser => {
-       console.log('firebaseUser', firebaseUser);
+      console.log('firebaseUser', firebaseUser);
+      if (firebaseUser) {
+        this.userSubscription =
+          this.afDB
+            .doc(`${firebaseUser.uid}/usuario`)
+            .valueChanges()
+            .subscribe((usuarioObjDB: any) => {
+              console.log('usuarioObjDB:', usuarioObjDB);
+
+              const newUser = new User(usuarioObjDB);
+              console.log(newUser);
+              this.store.dispatch(new SetUserAction(newUser));
+            });
+      } else {
+        this.userSubscription.unsubscribe();
+      }
     });
   }
 
