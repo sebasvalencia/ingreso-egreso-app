@@ -24,6 +24,7 @@ import { Subscription } from 'rxjs';
 export class AuthService {
 
   private userSubscription: Subscription = new Subscription();
+  private usuario: User;
 
   constructor(public afAuth: AngularFireAuth,
               private router: Router,
@@ -44,9 +45,11 @@ export class AuthService {
 
               const newUser = new User(usuarioObjDB);
               console.log(newUser);
+              this.usuario = newUser;
               this.store.dispatch(new SetUserAction(newUser));
             });
       } else {
+        this.usuario = null;
         this.userSubscription.unsubscribe();
       }
     });
@@ -117,6 +120,11 @@ export class AuthService {
           return fbUser != null;
         })
       );
+  }
+
+  // El obj de usuario siempre se pasa por referencia, auqnque sea propiedad privada, extraemos todo lo del usaurio y mandamos las propiedades
+  getUsuario() {
+    return { ...this.usuario };
   }
 
 
