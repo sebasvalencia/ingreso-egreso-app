@@ -9,7 +9,7 @@ export class IngresoEgresoModel {
     this.descripcion = ieObject && ieObject.descripcion || null;
     this.monto = ieObject && ieObject.monto || null;
     this.tipo = ieObject && ieObject.tipo || null;
-    this.uid = ieObject && ieObject.uid || null;
+    // this.uid = ieObject && ieObject.uid || null;
   }
 
 }
@@ -18,7 +18,7 @@ interface IngresoEgresoInterface {
   descripcion: string;
   monto: number;
   tipo: string;
-  uid: string;
+  // uid: string;
 }
 
 
