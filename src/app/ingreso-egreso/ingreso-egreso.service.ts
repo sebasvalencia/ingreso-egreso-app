@@ -29,6 +29,13 @@ export class IngresoEgresoService {
       .add({ ...ingresoEgreso });
   }
 
+  borrarIngresoEgreso(uid: string) {
+    const user = this.authService.getUsuario();
+
+    return this.afDB.doc(`${user.uid}/ingresos-egresos/items/${uid}`)
+            .delete();
+  }
+
   // Esucha cualquier cambio de la collection
   initIngresoEgresoListener() {
 
@@ -42,6 +49,7 @@ export class IngresoEgresoService {
 
   }
 
+  // Obtenemos la info de los items de  firebase y el uid de los items para formar un objecto
   private ingresoEgresoItems(uid: string) {
     this.ingresoEgresoItemsSubcription = this.afDB.collection(`${uid}/ingresos-egresos/items`)
       .snapshotChanges()
