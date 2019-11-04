@@ -15,6 +15,9 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
+// Graficas
+import { ChartsModule } from 'ng2-charts';
+
 // Environments
 import { environment } from 'src/environments/environment';
 
@@ -51,6 +54,7 @@ import { OrdenIngresoEgresoPipe } from './ingreso-egreso/orden-ingreso-egreso.pi
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    ChartsModule,
     StoreModule.forRoot( appReducers ), // Conf appReducer
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
