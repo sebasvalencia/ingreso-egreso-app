@@ -5,7 +5,7 @@ import { AppState } from '../app.reducer';
 import { IngresoEgresoModel } from './ingreso-egreso.model';
 import { AuthService } from '../auth/auth.service';
 import { filter, map } from 'rxjs/operators';
-import { SetItemsAction } from './ingreso-egreso.actions';
+import { SetItemsAction, UnsetItemsAction } from './ingreso-egreso.actions';
 import { Subscription } from 'rxjs';
 
 @Injectable({
@@ -73,6 +73,7 @@ export class IngresoEgresoService {
   cancelarSubscriptions() {
     this.ingresoEgresoListenerSubcription.unsubscribe();
     this.ingresoEgresoItemsSubcription.unsubscribe();
+    this.store.dispatch(new UnsetItemsAction());
   }
 
 }

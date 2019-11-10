@@ -18,6 +18,10 @@ export function AuthReducer(state = initialState, action: fromAuth.accionesAuth)
           ...action.user // tomo cada una de las propiedades del objecto user y hago pares de valores
         }
       };
+      case fromAuth.UNSET_USER:
+      return {
+        user: null
+      };
 
     default:
       return state;
