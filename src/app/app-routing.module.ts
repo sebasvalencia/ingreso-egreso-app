@@ -9,8 +9,14 @@ import { AuthGuardService } from './auth/auth-guard.service';
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
-  {path: '', component: DashboardComponent, children: dashboardRoutes, canActivate: [ AuthGuardService ]},
+  {
+    path: '',
+    loadChildren: './ingreso-egreso/ingreso-egreso.module#IngresoEgresoModule', // habilita el lazyload, importa el modulo
+    canLoad: [ AuthGuardService ], // No carges el modulo si no se cumple una serie de condiciones
+  },
   {path: '**', redirectTo: ''}
+  // {path: '', component: DashboardComponent, children: dashboardRoutes,
+  // canActivate: [ AuthGuardService ]},
 ];
 
 @NgModule({
